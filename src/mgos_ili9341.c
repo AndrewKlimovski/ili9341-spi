@@ -577,7 +577,7 @@ void mgos_ili9341_drawBitmap(uint16_t x0, uint16_t y0, char *fn, uint16_t w, uin
       if (xx & 7)
         b <<= 1;
       else
-        b = bitmap[yy * byteWidth + xx / 8];
+        b = fn[yy * byteWidth + xx / 8];
       if (b & 0x80) {
         pixelline[xx] = s_window.fg_color;
       } else {
