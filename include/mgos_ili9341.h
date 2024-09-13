@@ -109,6 +109,18 @@ uint16_t mgos_ili9341_line(int n);
 // Images
 void mgos_ili9341_drawDIF(uint16_t x0, uint16_t y0, char *fn);
 
+/**
+ * @brief Draw a bitmap image on the ILI9341 display.
+ * Enables usage of Adafruit image2cpp for drawing bite array images to the screen.
+ *
+ * @param x0 The x-coordinate of the top-left corner where the bitmap will be drawn.
+ * @param y0 The y-coordinate of the top-left corner where the bitmap will be drawn.
+ * @param fn The bite array name of the bitmap image to be drawn.
+ * @param w The width of the bitmap image.
+ * @param h The height of the bitmap image.
+ */
+void mgos_ili9341_drawBitmap(uint16_t x0, uint16_t y0, char *fn, uint16_t w, uint16_t h);
+
 #ifdef __cplusplus
 }
 #endif

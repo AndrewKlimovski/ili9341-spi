@@ -561,6 +561,38 @@ exit:
   close(fd);
 }
 
+void mgos_ili9341_drawBitmap(uint16_t x0, uint16_t y0, char *fn, uint16_t w, uint16_t h) {
+  uint16_t *pixelline = NULL;
+  uint8_t b = 0;
+  uint16_t byteWidth = (w + 7) / 8;  // Bitmap scanline pad = whole byte
+
+  pixelline = calloc(w, sizeof(uint16_t));
+  if (!pixelline) {
+    LOG(LL_ERROR, ("Memory allocation failed"));
+    return;
+  }
+
+  for (uint32_t yy = 0; yy < h; yy++) {
+    for (uint32_t xx = 0; xx < w; xx++) {
+      if (xx & 7)
+        b <<= 1;
+      else
+        b = bitmap[yy * byteWidth + xx / 8];
+      if (b & 0x80) {
+        pixelline[xx] = s_window.fg_color;
+      } else {
+        pixelline[xx] = s_window.bg_color;
+      }
+    }
+    ili9341_send_pixels(x0, y0 + yy, x0 + w - 1, y0 + yy, (uint8_t *)pixelline, w * sizeof(uint16_t));
+    if (y0 + yy > s_window.y1) {
+      break;
+    }
+  }
+
+  free(pixelline);
+}
+
 bool mgos_ili9341_spi_init(void) {
   // Setup DC pin
   mgos_gpio_write(mgos_sys_config_get_ili9341_dc_pin(), 0);
